@@ -81,3 +81,60 @@ func TestInspectNextItemEmpty(t *testing.T) {
 		t.Error("Error should not be nil, but", err)
 	}
 }
+
+func TestExtractMany(t *testing.T) {
+	myStack := Stack[int]{Items: []int{100, 200, 300}}
+	items, err := myStack.ExtractMany(2)
+	if err != nil {
+		t.Error("Error should be nil, not", err)
+	}
+	if len(items) != 2 {
+		t.Error("Items extracted should be 2, not", items)
+	}
+	if items[0] != 200 {
+		t.Error("First item of items should be 200, not", items[0])
+	}
+	if items[1] != 300 {
+		t.Error("Second item of items should be 300, not", items[1])
+	}
+	if myStack.Length() != 1 {
+		t.Error("Stack length should now be 1, not", myStack.Length())
+	}
+}
+
+func TestExtractManyExceed(t *testing.T) {
+	myStack := Stack[int]{Items: []int{100, 200, 300}}
+	_, err := myStack.ExtractMany(4)
+	if err == nil {
+		t.Error("Error should not be nil, but", err)
+	}
+	if myStack.Length() != 3 {
+		t.Error("Stack length should now be 3, not", myStack.Length())
+	}
+}
+
+func TestInsertSlice(t *testing.T) {
+	myStack := Stack[int]{Items: []int{100, 200, 300}}
+	mySlice := []int{400, 500}
+	myStack.InsertFromSlice(mySlice)
+	if myStack.Length() != 5 {
+		t.Error("Stack length should now be 5, not", myStack.Length())
+	}
+	item, _ := myStack.InspectNextItem()
+	if item != 500 {
+		t.Error("Last item in Stack should be 500, not", item)
+	}
+}
+
+func TestInsertEmptySlice(t *testing.T) {
+	myStack := Stack[int]{Items: []int{100, 200, 300}}
+	mySlice := []int{}
+	myStack.InsertFromSlice(mySlice)
+	if myStack.Length() != 3 {
+		t.Error("Stack length should now be 3, not", myStack.Length())
+	}
+	item, _ := myStack.InspectNextItem()
+	if item != 300 {
+		t.Error("Last item in Stack should be 300, not", item)
+	}
+}

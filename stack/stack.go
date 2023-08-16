@@ -39,6 +39,37 @@ func (thisStack *Stack[T]) Pop() (nextItem T, err error) {
 }
 
 /*
+Extract many items from the stack in a new slice
+
+args: amount of items to extract
+
+returns: slice of the items extracted
+for example, if the stack is [1, 2, 3], and you request 2, the result would be [2, 3]
+
+the method returns an error if you request to extract more items than available
+*/
+func (thisStack *Stack[T]) ExtractMany(amountToExtract int) (items []T, err error) {
+	var stackLength int = thisStack.Length()
+	if stackLength < amountToExtract {
+		return items, errors.New("Amount to extract exceeds stack size")
+	}
+	var startIndex int = stackLength - amountToExtract
+	items = thisStack.Items[startIndex:stackLength]
+	thisStack.Items = thisStack.Items[:startIndex]
+	return items, nil
+}
+
+/*
+Insert many items from a slice to the stack
+For example, if the stack is [1] and the slice is [2, 3], the stack will be [1, 2, 3]
+*/
+func (thisStack *Stack[T]) InsertFromSlice(items []T) {
+	for _, item := range items {
+		thisStack.Push(item)
+	}
+}
+
+/*
 Returns the value of the next item without removing it from the stack
 returns an error if the stack is empty
 */
