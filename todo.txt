@@ -1,7 +1,3 @@
-- document README with examples
-    - document main README
-    - document set README
-    - document stack README
 - Set:
     - Set Difference 
     - Symmetric difference
