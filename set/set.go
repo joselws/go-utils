@@ -88,10 +88,10 @@ func (thisSet *Set[T]) IsSupersetOf(otherSet Set[T]) bool {
 
 /*
 Takes in another set of the same type and checks whether your set
-(the one you're calling the method with) is a superset of the set
+(the one you're calling the method with) is a subset of the set
 you passed as an argument
 
-Returns true if it is a superset, and false otherwise
+Returns true if it is a subset, and false otherwise
 */
 func (thisSet *Set[T]) IsSubsetOf(otherSet Set[T]) bool {
 	for key := range thisSet.Items {
