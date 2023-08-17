@@ -1,4 +1,7 @@
 - document README with examples
+    - document main README
+    - document set README
+    - document stack README
 - Set:
     - Union (DONE)
     - Intersection (DONE)
