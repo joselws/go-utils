@@ -6,3 +6,9 @@
     - Set Difference 
     - Symmetric difference
     - make available data types "comparable"
+- Stack:
+    - Readme
+    - Test importing this package
+    - InspectLastItem method
+    - `InspectItem(index int) item T` method
+    
