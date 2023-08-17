@@ -3,14 +3,6 @@
     - document set README
     - document stack README
 - Set:
-    - Union (DONE)
-    - Intersection (DONE)
     - Set Difference 
-    - Add (DONE)
-    - Remove (DONE)
-    - Contains (DONE)
-    - IsSuperSet (DONE)
-    - IsSubSet (DONE)
-    - AddFromSlice (DONE)
-    - ToSlice (DONE)
     - Symmetric difference
+    - make available data types "comparable"
