@@ -91,11 +91,11 @@ func TestExtractMany(t *testing.T) {
 	if len(items) != 2 {
 		t.Error("Items extracted should be 2, not", items)
 	}
-	if items[0] != 200 {
-		t.Error("First item of items should be 200, not", items[0])
+	if items[0] != 300 {
+		t.Error("First item of items should be 300, not", items[0])
 	}
-	if items[1] != 300 {
-		t.Error("Second item of items should be 300, not", items[1])
+	if items[1] != 200 {
+		t.Error("Second item of items should be 200, not", items[1])
 	}
 	if myStack.Length() != 1 {
 		t.Error("Stack length should now be 1, not", myStack.Length())

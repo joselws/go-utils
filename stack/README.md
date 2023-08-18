@@ -92,11 +92,11 @@ nextNumber, err := numberStack.Pop() // error is not nil, handle it!
 
 **ExtractMany**
 
-`ExtractMany(int) (items []T, err error)` Removes many items from the Stack. It takes an integer as an argument, which is the amount of items you want to take off the stack, and it returns a slice of that many items and an error. The error is not `nil` when you request for more items than the stack holds.
+`ExtractMany(int) (items []T, err error)` Removes many items from the Stack. It takes an integer as an argument, which is the amount of items you want to take off the stack, and it returns a slice of that many items and an error. The error is not `nil` when you request for more items than the stack holds. The slice is returned such as it will be easily iterable in the same order as you would get the items from the stack.
 
 ```Go
 fmt.Println(numberStack) // Stack[int][1 2 3 4 5]
-numberSlice, err := numberStack.ExtrackMany(3) // returns [3 4 5], nil
+numberSlice, err := numberStack.ExtrackMany(3) // returns [5 4 3], nil
 
 fmt.Println(numberStack) // Stack[int][1 2]
 numberSlice, err := numberStack.ExtrackMany(3) // handle not nil error!

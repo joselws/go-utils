@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"slices"
 )
 
 type Stack[T any] struct {
@@ -56,6 +57,7 @@ func (thisStack *Stack[T]) ExtractMany(amountToExtract int) (items []T, err erro
 	var startIndex int = stackLength - amountToExtract
 	items = thisStack.Items[startIndex:stackLength]
 	thisStack.Items = thisStack.Items[:startIndex]
+	slices.Reverse(items)
 	return items, nil
 }
 
