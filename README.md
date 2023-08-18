@@ -2,6 +2,8 @@
 
 Library with many utility functions and data structures for the Go programming language.
 
+This was made with Go version 1.21.
+
 ## Installation
 
 To install this library, run the following code snippet in your terminal at your Go project folder location:
