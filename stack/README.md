@@ -108,7 +108,7 @@ numberSlice, err := numberStack.ExtrackMany(3) // handle not nil error!
 
 ```Go
 fmt.Println(numberStack) // Stack[int][1 2 3 4 5]
-numberSlice, err := numberStack.InsertFromSlice([]int{6, 7, 8}) 
+numberStack.InsertFromSlice([]int{6, 7, 8}) 
 fmt.Println(numberStack) // Stack[int][1 2 3 4 5 6 7 8]
 ```
 
