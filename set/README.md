@@ -41,7 +41,7 @@ For the time being, you cannot use `Set` with `maps`, `slices`, `structs`, `Set`
 
 ### Initialization
 
-Create new sets with the `NewSet[T]()` function, where `T` is any of the available data types. For example:
+Create new sets with the `NewSet[T]()` constructor, where `T` is any of the available data types. For example:
 
 ```Go
 mySet := set.NewSet[int]()

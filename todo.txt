@@ -2,9 +2,12 @@
     - Set Difference 
     - Symmetric difference
     - make available data types "comparable"
+    - make underlying map concurrency safe
 - Stack:
     - Readme
-    - Test importing this package
     - InspectLastItem method
     - `InspectItem(index int) item T` method
+    - InspectItems(start int, end int) items []T method
+    - Rework Stack to make underlying slice append to first element
+    - make underlying slice concurrency safe
     

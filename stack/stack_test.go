@@ -12,6 +12,13 @@ func TestStackCorrectlyInitialized(t *testing.T) {
 	}
 }
 
+func TestStackCorrectlyCreated(t *testing.T) {
+	myStack := NewStack[int]()
+	if len(myStack.Items) != 0 {
+		t.Error("Stack length should be 0, not", len(myStack.Items))
+	}
+}
+
 func TestPushMethod(t *testing.T) {
 	myStack := Stack[int]{}
 	myStack.Push(100)

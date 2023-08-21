@@ -12,7 +12,7 @@ Stack data structure implementation for the Go programming language. Implement L
 
 ```Go
 // Create new stack
-numberStack := stack.Stack[int]{}
+numberStack := stack.NewStack[int]()
 
 // Add items to the stack
 numberStack.Push(500)
@@ -40,10 +40,10 @@ All data types are available to use for `Stack`:
 
 ### Initialization
 
-Create a new stack with the `Stack[T]{}` structure, where `T` is any data type. For example:
+Create a new stack with the `NewStack[T]()` constructor, where `T` is any data type. For example:
 
 ```Go
-myStack := stack.Stack[int]{}
+myStack := stack.NewStack[int]()
 ```
 
 ### String representation

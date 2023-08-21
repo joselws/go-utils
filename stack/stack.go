@@ -15,6 +15,11 @@ type Stack[T any] struct {
 	Items []T
 }
 
+// Stack constructor
+func NewStack[T any]() Stack[T] {
+	return Stack[T]{}
+}
+
 // Get the current length of the stack
 func (thisStack *Stack[T]) Length() int {
 	return len(thisStack.Items)
