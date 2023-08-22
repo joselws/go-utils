@@ -14,3 +14,6 @@
     - readJSONFile
     - readJSONString
     - writeToJSONFile
+    - convertToJSON
+    - convertFromJSON
+    
