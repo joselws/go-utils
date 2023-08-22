@@ -10,4 +10,7 @@
     - InspectItems(start int, end int) items []T method
     - Rework Stack to make underlying slice append to first element
     - make underlying slice concurrency safe
-    
+- JSON (utility function with high level JSON read and writes):
+    - readJSONFile
+    - readJSONString
+    - writeToJSONFile
