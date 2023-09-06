@@ -6,18 +6,15 @@ import (
 	"reflect"
 	"slices"
 	"strings"
+
+	"github.com/joselws/go-utils/mytypes"
 )
 
 /*
 A Set can only be initialized with the following built-in types.
-rune and byte data types are added implicitly due to them being alias for
-int32 and uint8 respectively
 */
 type SetTypes interface {
-	int | int8 | int16 | int32 | int64 |
-		uint | uint8 | uint16 | uint32 | uint64 |
-		float32 | float64 |
-		string
+	mytypes.Number | string
 }
 
 // The Set is a data structure that works with a map under the hood
