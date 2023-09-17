@@ -19,4 +19,7 @@
     - convertFromJSON
 - Sorts:
     - README
+- Mathutils:
+    - README
+    - function docs
     
