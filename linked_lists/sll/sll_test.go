@@ -34,7 +34,7 @@ func TestNodeStringWithNext(t *testing.T) {
 }
 
 func TestNewSingleLinkedList(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	if linkedList.Length != 0 {
 		t.Error("linkedList Length should be 0, not", linkedList.Length)
 	}
@@ -44,7 +44,7 @@ func TestNewSingleLinkedList(t *testing.T) {
 }
 
 func TestLinkedListString(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedListString := fmt.Sprint(linkedList)
 	if linkedListString != "SinglyLinkedList(0)" {
 		t.Error("linkedList string should be SinglyLinkedList(0), not", linkedListString)
@@ -52,7 +52,7 @@ func TestLinkedListString(t *testing.T) {
 }
 
 func TestLinkedListPrepend(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedList.Prepend(20)
 	if linkedList.Length != 1 {
 		t.Error("Linked List length should be 1, not", linkedList.Length)
@@ -66,7 +66,7 @@ func TestLinkedListPrepend(t *testing.T) {
 }
 
 func TestLinkedListPrependMany(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedList.Prepend(20)
 	linkedList.Prepend(10)
 	if linkedList.Length != 2 {
@@ -87,14 +87,14 @@ func TestLinkedListPrependMany(t *testing.T) {
 }
 
 func TestEmptyLinkedListContains(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	if linkedList.Contains(20) {
 		t.Error("Empty Linked list should not contain 20")
 	}
 }
 
 func TestLinkedListContains(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedList.Prepend(20)
 	linkedList.Prepend(10)
 	if !linkedList.Contains(20) {
@@ -106,7 +106,7 @@ func TestLinkedListContains(t *testing.T) {
 }
 
 func TestDeleteEmptyLinkedList(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	if linkedList.Delete(20) {
 		t.Error("Linked list should not delete 20 if empty")
 	}
@@ -116,7 +116,7 @@ func TestDeleteEmptyLinkedList(t *testing.T) {
 }
 
 func TestDeleteFirstElement(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedList.Prepend(20)
 	linkedList.Prepend(10)
 	linkedList.Prepend(50)
@@ -132,7 +132,7 @@ func TestDeleteFirstElement(t *testing.T) {
 }
 
 func TestDeleteLastElement(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedList.Prepend(20)
 	linkedList.Prepend(10)
 	linkedList.Prepend(50)
@@ -151,7 +151,7 @@ func TestDeleteLastElement(t *testing.T) {
 }
 
 func TestDeleteMiddleElement(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedList.Prepend(20)
 	linkedList.Prepend(10)
 	linkedList.Prepend(50)
@@ -170,7 +170,7 @@ func TestDeleteMiddleElement(t *testing.T) {
 }
 
 func TestDeleteElementNotFound(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedList.Prepend(20)
 	linkedList.Prepend(10)
 	linkedList.Prepend(50)
@@ -186,7 +186,7 @@ func TestDeleteElementNotFound(t *testing.T) {
 }
 
 func TestPopFirst(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	linkedList.Prepend(20)
 	value, err := linkedList.PopFirst()
 	if err != nil {
@@ -201,7 +201,7 @@ func TestPopFirst(t *testing.T) {
 }
 
 func TestPopFirstError(t *testing.T) {
-	linkedList := NewSingleLinkedList()
+	linkedList := NewSingleLinkedList[int]()
 	_, err := linkedList.PopFirst()
 	if err == nil {
 		t.Error("Error should not be nil")

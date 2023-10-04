@@ -5,17 +5,17 @@ import (
 	"fmt"
 )
 
-type Node struct {
-	Value interface{}
-	Next  *Node
+type Node[T comparable] struct {
+	Value T
+	Next  *Node[T]
 }
 
-func NewSingleLinkedListNode(value interface{}) *Node {
-	node := Node{Value: value}
+func NewSingleLinkedListNode[T comparable](value T) *Node[T] {
+	node := Node[T]{Value: value}
 	return &node
 }
 
-func (node *Node) String() string {
+func (node *Node[T]) String() string {
 	var nodeNext string
 	if node.Next == nil {
 		nodeNext = "nil"
@@ -25,28 +25,33 @@ func (node *Node) String() string {
 	return fmt.Sprintf("Node(%v)(%v)", node.Value, nodeNext)
 }
 
-type LinkedList struct {
-	Head   *Node
+type LinkedList[T comparable] struct {
+	Head   *Node[T]
 	Length uint
 }
 
-func NewSingleLinkedList() *LinkedList {
-	linkedList := LinkedList{}
+func NewSingleLinkedList[T comparable]() *LinkedList[T] {
+	linkedList := LinkedList[T]{}
 	return &linkedList
 }
 
-func (linkedList LinkedList) String() string {
+func (linkedList LinkedList[T]) String() string {
 	return fmt.Sprintf("SinglyLinkedList(%v)", linkedList.Length)
 }
 
-func (linkedList *LinkedList) Prepend(value interface{}) {
+func (linkedList *LinkedList[T]) Prepend(value T) {
 	newNode := NewSingleLinkedListNode(value)
 	newNode.Next = linkedList.Head
 	linkedList.Head = newNode
 	linkedList.Length++
 }
 
-func (linkedList LinkedList) Contains(value interface{}) bool {
+func (linkedList LinkedList[T]) Contains(value any) bool {
+	_, ok := value.(T)
+	if ok {
+
+	}
+
 	for linkedList.Head != nil {
 		if linkedList.Head.Value == value {
 			return true
@@ -56,7 +61,7 @@ func (linkedList LinkedList) Contains(value interface{}) bool {
 	return false
 }
 
-func (linkedList LinkedList) PrintList() {
+func (linkedList LinkedList[T]) PrintList() {
 	for linkedList.Head != nil {
 		fmt.Print(linkedList.Head.Value, " ")
 		linkedList.Head = linkedList.Head.Next
@@ -64,14 +69,14 @@ func (linkedList LinkedList) PrintList() {
 	fmt.Println()
 }
 
-func (linkedList *LinkedList) Delete(value interface{}) bool {
+func (linkedList *LinkedList[T]) Delete(value T) bool {
 
 	if linkedList.Head == nil {
 		return false
 	}
 
 	head := linkedList.Head
-	var previous *Node
+	var previous *Node[T]
 	for linkedList.Head != nil {
 		// delete first element
 		if linkedList.Head.Value == value && previous == nil {
@@ -101,8 +106,8 @@ func (linkedList *LinkedList) Delete(value interface{}) bool {
 	return false
 }
 
-func (linkedList *LinkedList) PopFirst() (interface{}, error) {
-	var value interface{}
+func (linkedList *LinkedList[T]) PopFirst() (T, error) {
+	var value T
 	if linkedList.Head == nil {
 		return value, errors.New("can't Pop from an empty linked list")
 	}
