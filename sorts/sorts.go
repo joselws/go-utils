@@ -4,7 +4,7 @@ import (
 	"github.com/joselws/go-utils/mytypes"
 )
 
-// Sort a slice with insertion sort.
+// Sort a slice of numbers with insertion sort.
 func InsertionSort[T mytypes.Number](elements []T) {
 	for i := range elements {
 		for j := i; j > 0 && elements[j] < elements[j-1]; j-- {
@@ -13,7 +13,7 @@ func InsertionSort[T mytypes.Number](elements []T) {
 	}
 }
 
-// Sort a slice with selection sort.
+// Sort a slice of numbers with selection sort.
 func SelectionSort[T mytypes.Number](elements []T) {
 	for i := range elements {
 		var minIndex int = i
@@ -28,6 +28,7 @@ func SelectionSort[T mytypes.Number](elements []T) {
 	}
 }
 
+// Sort a slice of numbers with bubble sort.
 func BubbleSort[T mytypes.Number](elements []T) {
 	var length int = len(elements)
 	if length < 2 {
