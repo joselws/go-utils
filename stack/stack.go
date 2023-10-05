@@ -2,7 +2,7 @@
 Implementation of a Stack data structure (LIFO)
 */
 
-package stack
+package stackarr
 
 import (
 	"errors"
