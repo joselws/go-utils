@@ -5,6 +5,10 @@
     - make underlying map concurrency safe
 - Stack:
     - Readme
+    - ExtractMany
+    - InsertFromSlice
+    - InsertFromStack
+    - String()
     - InspectLastItem method
     - `InspectItem(index int) item T` method
     - InspectItems(start int, end int) items []T method
@@ -20,6 +24,7 @@
     - writeToJSONFile
     - convertToJSON
     - convertFromJSON
+- Deque
 - Sorts:
     - README
 - Linked Lists:
