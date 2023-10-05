@@ -3,7 +3,6 @@ package stackll
 import (
 	"errors"
 	"fmt"
-	"math"
 
 	"github.com/joselws/go-utils/linked_lists/sll"
 )
@@ -11,19 +10,13 @@ import (
 // TODO: docs
 type Stack[T comparable] struct {
 	linkedList *sll.LinkedList[T]
-	size       float64
+	size       int
 }
 
-func NewStack[T comparable](size float64) *Stack[T] {
-	var stackSize float64
-	if size == 0 {
-		stackSize = math.Inf(1)
-	} else {
-		stackSize = math.Floor(size)
-	}
+func NewStack[T comparable](size int) *Stack[T] {
 	stack := Stack[T]{
 		linkedList: sll.NewSingleLinkedList[T](),
-		size:       stackSize,
+		size:       size,
 	}
 	return &stack
 }
@@ -33,7 +26,10 @@ func (stack Stack[T]) String() string {
 }
 
 func (stack *Stack[T]) IsFull() bool {
-	if stack.size == float64(stack.linkedList.Length) {
+	if stack.size == 0 {
+		return false
+	}
+	if stack.size == stack.linkedList.Length {
 		return true
 	}
 	return false

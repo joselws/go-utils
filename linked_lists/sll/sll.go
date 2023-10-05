@@ -27,7 +27,7 @@ func (node *Node[T]) String() string {
 
 type LinkedList[T comparable] struct {
 	Head   *Node[T]
-	Length uint
+	Length int
 }
 
 func NewSingleLinkedList[T comparable]() *LinkedList[T] {
