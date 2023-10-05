@@ -1,4 +1,4 @@
-package stackarr
+package stack
 
 import (
 	"testing"
