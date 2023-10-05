@@ -24,14 +24,11 @@
     - writeToJSONFile
     - convertToJSON
     - convertFromJSON
-<<<<<<< HEAD
 - Deque
-=======
 - Sorts:
     - README
 - Linked Lists:
     - SLL
         - File documentation
     - README
->>>>>>> main
     
