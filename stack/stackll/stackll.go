@@ -22,7 +22,14 @@ func NewStack[T comparable](size int) *Stack[T] {
 }
 
 func (stack Stack[T]) String() string {
+	if stack.size == 0 {
+		return fmt.Sprintf("Stack(%v)", stack.linkedList.Length)
+	}
 	return fmt.Sprintf("Stack(%v/%v)", stack.linkedList.Length, stack.size)
+}
+
+func (stack *Stack[T]) Len() int {
+	return stack.linkedList.Length
 }
 
 func (stack *Stack[T]) IsFull() bool {
@@ -50,7 +57,7 @@ func (stack *Stack[T]) Push(value T) bool {
 	return true
 }
 
-func (stack *Stack[T]) Pop(value T) (T, error) {
+func (stack *Stack[T]) Pop() (T, error) {
 	var element T
 	if stack.IsEmpty() {
 		return element, errors.New("Cannot Pop from empty stack!")
@@ -62,7 +69,7 @@ func (stack *Stack[T]) Pop(value T) (T, error) {
 	return element, nil
 }
 
-func (stack *Stack[T]) PeekNext(value T) (T, error) {
+func (stack *Stack[T]) PeekNext() (T, error) {
 	var element T
 	if stack.IsEmpty() {
 		return element, errors.New("Cannot Peek() from empty stack!")
