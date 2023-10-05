@@ -15,13 +15,20 @@
     - Rework Stack to make underlying slice append to first element
     - make underlying slice concurrency safe
     - Implement a container.list data structure underneath
+    - Stack interface
+    - Stacksll
+        - Keep working on it
 - JSON (utility function with high level JSON read and writes):
     - readJSONFile
     - readJSONString
     - writeToJSONFile
     - convertToJSON
     - convertFromJSON
+- Deque
 - Sorts:
     - README
-- Deque
+- Linked Lists:
+    - SLL
+        - File documentation
+    - README
     
