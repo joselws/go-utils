@@ -1,3 +1,8 @@
+/*
+Singly linked list implementation.
+Has only a pointer to Head and can only move to Next.
+*/
+
 package sll
 
 import (
@@ -5,16 +10,20 @@ import (
 	"fmt"
 )
 
+// Each element on the linked list.
 type Node[T comparable] struct {
 	Value T
 	Next  *Node[T]
 }
 
+// Create a new node by passing in a value.
 func NewSingleLinkedListNode[T comparable](value T) *Node[T] {
 	node := Node[T]{Value: value}
 	return &node
 }
 
+// String representation of the Node for Stringer interface.
+// Prints Node(value)(address-or-nil)
 func (node *Node[T]) String() string {
 	var nodeNext string
 	if node.Next == nil {
@@ -25,20 +34,27 @@ func (node *Node[T]) String() string {
 	return fmt.Sprintf("Node(%v)(%v)", node.Value, nodeNext)
 }
 
+// Singly linked list type. Head can be a Node or nil.
+// Length increases or decreases automatically.
 type LinkedList[T comparable] struct {
 	Head   *Node[T]
 	Length int
 }
 
+// Creates a new singly linked list (by reference).
 func NewSingleLinkedList[T comparable]() *LinkedList[T] {
 	linkedList := LinkedList[T]{}
 	return &linkedList
 }
 
+// String representation of the Linked List for Stringer interface.
+// Prints "SinglyLinkedList(length)".
 func (linkedList LinkedList[T]) String() string {
 	return fmt.Sprintf("SinglyLinkedList(%v)", linkedList.Length)
 }
 
+// Add an element to the beginning of the Linked List.
+// O(1) time complexity.
 func (linkedList *LinkedList[T]) Prepend(value T) {
 	newNode := NewSingleLinkedListNode(value)
 	newNode.Next = linkedList.Head
@@ -46,12 +62,9 @@ func (linkedList *LinkedList[T]) Prepend(value T) {
 	linkedList.Length++
 }
 
+// Returns true if the value is within the Linked List.
+// O(n) time complexity.
 func (linkedList LinkedList[T]) Contains(value any) bool {
-	_, ok := value.(T)
-	if ok {
-
-	}
-
 	for linkedList.Head != nil {
 		if linkedList.Head.Value == value {
 			return true
@@ -61,6 +74,8 @@ func (linkedList LinkedList[T]) Contains(value any) bool {
 	return false
 }
 
+// Prints all the values of the elements in the Linked List.
+// O(n) time complexity.
 func (linkedList LinkedList[T]) PrintList() {
 	for linkedList.Head != nil {
 		fmt.Print(linkedList.Head.Value, " ")
@@ -69,6 +84,10 @@ func (linkedList LinkedList[T]) PrintList() {
 	fmt.Println()
 }
 
+// Deletes an element of the Linked List.
+// Returns true if the value was found and deleted.
+// Returns false if no value was found, thus none was deleted.
+// O(n) time complexity.
 func (linkedList *LinkedList[T]) Delete(value T) bool {
 
 	if linkedList.Head == nil {
@@ -106,6 +125,9 @@ func (linkedList *LinkedList[T]) Delete(value T) bool {
 	return false
 }
 
+// Removes and returns the current Head value of the list.
+// Returns an error if the list is empty.
+// O(1) time complexity.
 func (linkedList *LinkedList[T]) PopFirst() (T, error) {
 	var value T
 	if linkedList.Head == nil {
