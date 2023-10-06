@@ -4,20 +4,16 @@
     - make available data types "comparable"
     - make underlying map concurrency safe
 - Stack:
-    - Readme
-    - ExtractMany
-    - InsertFromSlice
-    - InsertFromStack
-    - String()
-    - InspectLastItem method
-    - `InspectItem(index int) item T` method
-    - InspectItems(start int, end int) items []T method
-    - Rework Stack to make underlying slice append to first element
-    - make underlying slice concurrency safe
-    - Implement a container.list data structure underneath
-    - Stack interface
-    - Stacksll
-        - Keep working on it
+    - README
+    - Stack interface docs
+    - Stackarr
+        - finish
+        - docs
+        - tests
+    - stack
+        - finish
+        - docs
+        - tests
 - JSON (utility function with high level JSON read and writes):
     - readJSONFile
     - readJSONString
