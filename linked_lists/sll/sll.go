@@ -23,7 +23,7 @@ func NewSingleLinkedListNode[T comparable](value T) *Node[T] {
 }
 
 // String representation of the Node for Stringer interface.
-// Prints Node(value)(address-or-nil)
+// Prints Node(value)(Node-or-nil)
 func (node *Node[T]) String() string {
 	var nodeNext string
 	if node.Next == nil {
