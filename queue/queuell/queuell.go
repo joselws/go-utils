@@ -63,6 +63,7 @@ func (queue *Queue[T]) IsEmpty() bool {
 // Returns true if the item was put in the queue.
 // Returns false if the queue is already full
 // and the item couldn't be enqueued into.
+// O(1) time complexity.
 func (queue *Queue[T]) Enqueue(value T) bool {
 	if queue.IsFull() {
 		return false
@@ -73,6 +74,7 @@ func (queue *Queue[T]) Enqueue(value T) bool {
 
 // Take out the next item in the queue and return it.
 // It returns false on ok if the queue is empty.
+// O(1) time complexity.
 func (queue *Queue[T]) Dequeue() (T, bool) {
 	var value T
 	if queue.Len() == 0 {
@@ -87,6 +89,7 @@ func (queue *Queue[T]) Dequeue() (T, bool) {
 
 // Get the next item from the queue without removing it.
 // It returns false on ok if the queue is empty.
+// O(1) time complexity.
 func (queue *Queue[T]) PeekNext() (T, bool) {
 	var value T
 	if queue.IsEmpty() {
