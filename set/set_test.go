@@ -247,3 +247,76 @@ func TestIsDisjointEmptySet(t *testing.T) {
 		t.Error("Sets should be disjointed")
 	}
 }
+
+func TestCopy(t *testing.T) {
+	set1 := NewSet[int]()
+	set1.AddFromSlice([]int{1, 2, 3})
+	set2 := set1.Copy()
+	if set1 == set2 {
+		t.Error("Sets should be different")
+	}
+	if !set1.Equal(set2) {
+		t.Error("Sets should have the same elements")
+	}
+}
+
+func TestEqual(t *testing.T) {
+	set1 := NewSet[int]()
+	set1.AddFromSlice([]int{1, 2, 3})
+	set2 := NewSet[int]()
+	set2.AddFromSlice([]int{1, 2, 3})
+	set3 := NewSet[int]()
+	set3.AddFromSlice([]int{1, 2, 4})
+
+	if !set1.Equal(set2) {
+		t.Error("set1 and set2 should be equal")
+	}
+	if set1.Equal(set3) {
+		t.Error("set1 and set3 should be different")
+	}
+}
+
+func TestDifference(t *testing.T) {
+	set1 := NewSet[int]()
+	set1.AddFromSlice([]int{1, 2, 3})
+	set2 := NewSet[int]()
+	set2.AddFromSlice([]int{1, 3})
+
+	result := NewSet[int]()
+	result.Add(2)
+
+	if !result.Equal(set1.Difference(set2)) {
+		t.Error("Difference of both sets should be a set with only the element 2")
+	}
+}
+
+func TestDifferenceEmptySets(t *testing.T) {
+	set := NewSet[int]()
+	set.AddFromSlice([]int{1, 2, 3})
+	empty := NewSet[int]()
+
+	if !set.Equal(set.Difference(empty)) {
+		t.Error("Empty sets shouldn't take away elements from other sets")
+	}
+	if !empty.Equal(empty.Difference(set)) {
+		t.Error("Empty sets shouldn't take away elements from other sets")
+	}
+}
+
+func TestSymmetricDifference(t *testing.T) {
+	set1 := NewSet[int]()
+	set1.AddFromSlice([]int{1, 2, 3})
+	set2 := NewSet[int]()
+	set2.AddFromSlice([]int{3, 4, 5})
+
+	expected := NewSet[int]()
+	expected.AddFromSlice([]int{1, 2, 4, 5})
+
+	result := set1.SymmetricDifference(set2)
+	if !result.Equal(expected) {
+		t.Error("Symmetric difference should be 1, 2, 4, 5, not", result)
+	}
+	if !set1.SymmetricDifference(set2).Equal(set2.SymmetricDifference(set1)) {
+		t.Error("Symmetric difference should yield the same result both ways")
+	}
+}

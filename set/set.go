@@ -3,6 +3,7 @@ package set
 
 import (
 	"fmt"
+	"maps"
 	"reflect"
 	"slices"
 	"strings"
@@ -141,7 +142,36 @@ func (thisSet *Set[T]) IsDisjoint(otherSet *Set[T]) bool {
 	return true
 }
 
-// Outputs set in this format when printed: Set[T]{item1, itemn}
+// Returns a copy of the set
+func (thisSet *Set[T]) Copy() *Set[T] {
+	copy := NewSet[T]()
+	maps.Copy(copy.Items, thisSet.Items)
+	return copy
+}
+
+// Performs thisSet - otherSet
+func (thisSet *Set[T]) Difference(otherSet *Set[T]) *Set[T] {
+	result := thisSet.Copy()
+	for element := range otherSet.Items {
+		result.Remove(element)
+	}
+	return result
+}
+
+// Returns a set with the symmetric difference between both sets
+func (thisSet *Set[T]) SymmetricDifference(otherSet *Set[T]) *Set[T] {
+	intersection := thisSet.Intersection(otherSet)
+	set1 := thisSet.Difference(intersection)
+	set2 := otherSet.Difference(intersection)
+	return set1.Union(set2)
+}
+
+// Returns true if both sets contain the same elements.
+func (thisSet *Set[T]) Equal(otherSet *Set[T]) bool {
+	return maps.Equal(thisSet.Items, otherSet.Items)
+}
+
+// Outputs set in this format when printed: Set[T]{item1, item2}
 func (thisSet Set[T]) String() string {
 	var itemsStringSlice []string
 	setSlice := thisSet.ToSlice()

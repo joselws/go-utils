@@ -168,3 +168,41 @@ fmt.Println(numberSet1) // Set[int]{1, 3, 5}
 fmt.Println(numberSet2) // Set[int]{2, 4, 6}
 fmt.Println(numberSet1.IsDisjoint(numberSet2)) // true
 ```
+
+**Copy**
+`Copy() *Set[T]` returns an copy of the set:
+
+```Go
+fmt.Println(numberSet1) // Set[int]{1, 3, 5}
+numberSet2 := numberSet1.Copy()
+fmt.Println(numberSet2) // Set[int]{1, 3, 5}
+```
+
+**Difference**
+`Difference(other *Set[T]) *Set[T]` takes in another set and returns the difference of the original set substracted by the other set:
+
+```Go
+fmt.Println(numberSet1) // Set[int]{1, 2, 3}
+fmt.Println(numberSet2) // Set[int]{3}
+difference := numberSet1.Difference(numberSet2)
+fmt.Println(difference) // Set[int]{1, 2}
+```
+
+**Equal**
+`Equal(other *Set[T]) bool` returns true if both sets contain the exact same elements. It's different from the `==` operator because it doesn't check whether both sets refer to the same location in memory:
+
+```Go
+fmt.Println(numberSet1) // Set[int]{1, 2, 3}
+fmt.Println(numberSet2) // Set[int]{1, 2, 3}
+fmt.Println(numberSet1.Equal(numberSet2)) // true
+fmt.Println(numberSet1 == numberSet2) // false
+```
+
+**SymmetricDifference**
+`SymmetricDifference(other *Set[T]) *Set[T]` performs the symmetric difference operation between both sets:
+
+```Go
+fmt.Println(numberSet1) // Set[int]{1, 2}
+fmt.Println(numberSet2) // Set[int]{2, 3}
+fmt.Println(numberSet1.SymmetricDifference(numberSet2)) // Set[int]{1, 3}
+```
