@@ -23,8 +23,8 @@ type Set[T SetTypes] struct {
 }
 
 // Use this function whenever you want a new set
-func NewSet[T SetTypes]() Set[T] {
-	return Set[T]{Items: make(map[T]bool)}
+func NewSet[T SetTypes]() *Set[T] {
+	return &Set[T]{Items: make(map[T]bool)}
 }
 
 // Returns the length of the set
@@ -103,7 +103,7 @@ func (thisSet *Set[T]) IsSubsetOf(otherSet Set[T]) bool {
 Calculates the intersection of your set and another set you pass as arguments,
 and returns these common values in a new set object
 */
-func (thisSet *Set[T]) Intersection(otherSet Set[T]) Set[T] {
+func (thisSet *Set[T]) Intersection(otherSet *Set[T]) *Set[T] {
 	intersection := NewSet[T]()
 	for key := range otherSet.Items {
 		if thisSet.Contains(key) {
@@ -117,7 +117,7 @@ func (thisSet *Set[T]) Intersection(otherSet Set[T]) Set[T] {
 Calculates the union of your set and another set you pass as arguments,
 and returns these common values in a new set object
 */
-func (thisSet *Set[T]) Union(otherSet Set[T]) Set[T] {
+func (thisSet *Set[T]) Union(otherSet *Set[T]) *Set[T] {
 	union := NewSet[T]()
 	for key := range otherSet.Items {
 		union.Add(key)
@@ -126,6 +126,19 @@ func (thisSet *Set[T]) Union(otherSet Set[T]) Set[T] {
 		union.Add(key)
 	}
 	return union
+}
+
+/*
+Returns true if both sets are disjointed, otherwise returns false.
+Two sets are disjointed if they have no elements in common.
+*/
+func (thisSet *Set[T]) IsDisjoint(otherSet *Set[T]) bool {
+	for element := range thisSet.Items {
+		if otherSet.Contains(element) {
+			return false
+		}
+	}
+	return true
 }
 
 // Outputs set in this format when printed: Set[T]{item1, itemn}

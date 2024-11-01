@@ -105,9 +105,9 @@ func TestAddItemsEmpty(t *testing.T) {
 }
 
 func TestIntersection(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
-	set2 := Set[int]{Items: map[int]bool{2: true, 4: true}}
-	var intersection Set[int] = set1.Intersection(set2)
+	set1 := &Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set2 := &Set[int]{Items: map[int]bool{2: true, 4: true}}
+	var intersection *Set[int] = set1.Intersection(set2)
 	var intersectionLength int = intersection.Length()
 	if intersectionLength != 1 {
 		t.Error("Intersection should be 1, not", intersectionLength)
@@ -115,8 +115,8 @@ func TestIntersection(t *testing.T) {
 }
 
 func TestUnion(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
-	set2 := Set[int]{Items: map[int]bool{2: true, 4: true}}
+	set1 := &Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set2 := &Set[int]{Items: map[int]bool{2: true, 4: true}}
 	union := set1.Union(set2)
 	if union.Length() != 4 {
 		t.Error("Union length should be 4, not", union.Length())
@@ -220,5 +220,30 @@ func TestToSliceEmpty(t *testing.T) {
 	var setSlice []int = set1.ToSlice()
 	if len(setSlice) != 0 {
 		t.Error("Slice length should be 0, not", len(setSlice))
+	}
+}
+
+func TestIsDisjoint(t *testing.T) {
+	set1 := NewSet[string]()
+	set1.AddFromSlice([]string{"apple", "pear", "orange"})
+	set2 := NewSet[string]()
+	set2.AddFromSlice([]string{"coconut", "avocado", "grape"})
+	if !set1.IsDisjoint(set2) {
+		t.Error("Sets should be disjointed")
+	}
+	if !set2.IsDisjoint(set1) {
+		t.Error("Sets should be disjointed")
+	}
+}
+
+func TestIsDisjointEmptySet(t *testing.T) {
+	set1 := NewSet[string]()
+	set2 := NewSet[string]()
+	set2.AddFromSlice([]string{"coconut", "avocado", "grape"})
+	if !set1.IsDisjoint(set2) {
+		t.Error("Sets should be disjointed")
+	}
+	if !set2.IsDisjoint(set1) {
+		t.Error("Sets should be disjointed")
 	}
 }

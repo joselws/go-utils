@@ -2,7 +2,7 @@
 
 Library with many utility functions and data structures for the Go programming language.
 
-This was made with Go version 1.21.
+This was made with Go version 1.23.
 
 ## Installation
 
