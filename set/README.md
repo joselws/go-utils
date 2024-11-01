@@ -41,7 +41,7 @@ For the time being, you cannot use `Set` with `maps`, `slices`, `structs`, `Set`
 
 ### Initialization
 
-Create new sets with the `NewSet[T]()` constructor, where `T` is any of the available data types. For example:
+Create new sets with the `NewSet[T]()` constructor, where `T` is any of the available data types. It returns a `*Set[T]` type. For example:
 
 ```Go
 mySet := set.NewSet[int]()
@@ -119,7 +119,7 @@ fmt.Println(nameSlice) // ["Jose" "Luis"]
 
 **IsSupersetOf**
 
-The function `IsSupersetOf(other Set[T]) bool` function takes in another `Set` of the same type and checks whether the `Set` is a super set of this other `Set`. Returns `true` if it's a superset, and `false` otherwise:
+The function `IsSupersetOf(other *Set[T]) bool` function takes in another `Set` of the same type and checks whether the `Set` is a super set of this other `Set`. Returns `true` if it's a superset, and `false` otherwise:
 
 ```Go
 fmt.Println(numberSet1) // Set[int]{1, 2, 3, 4, 5}
@@ -129,7 +129,7 @@ numberSet1.IsSupersetOf(numberSet2) // true
 
 **IsSubsetOf**
 
-The function `IsSubsetOf(other Set[T]) bool` function takes in another `Set` of the same type and checks whether the `Set` is a subset of this other `Set`. Returns `true` if it's a subset, and `false` otherwise:
+The function `IsSubsetOf(other *Set[T]) bool` function takes in another `Set` of the same type and checks whether the `Set` is a subset of this other `Set`. Returns `true` if it's a subset, and `false` otherwise:
 
 ```Go
 fmt.Println(numberSet1) // Set[int]{2, 4}
@@ -139,7 +139,7 @@ numberSet1.IsSubsetOf(numberSet2) // true
 
 **Intersection**
 
-`Intersection(other Set[T]) Set[T]` takes in another set and computes the intersection of both sets, returning a new `Set` with the intersected items:
+`Intersection(other *Set[T]) *Set[T]` takes in another set and computes the intersection of both sets, returning a new pointer to a `Set` with the intersected items:
 
 ```Go
 fmt.Println(numberSet1) // Set[int]{2, 4, 6, 8}
@@ -150,11 +150,21 @@ fmt.Println(intersection) // Set[int]{2, 4}
 
 **Union**
 
-`Union(other Set[T]) Set[T]` takes in another set and computes the Union of both sets, returning a new `Set` with the resulting items:
+`Union(other *Set[T]) *Set[T]` takes in another set and computes the Union of both sets, returning a new pointer to a `Set` with the resulting items:
 
 ```Go
 fmt.Println(numberSet1) // Set[int]{2, 4, 6, 8}
 fmt.Println(numberSet2) // Set[int]{1, 2, 3, 4, 5}
 union := numberSet1.Union(numberSet2)
 fmt.Println(union) // Set[int]{1, 2, 3, 4, 5, 6, 8}
+```
+
+**IsDisjoint**
+
+`IsDisjoint(other *Set[T]) bool` takes in another set and returns `true` only if both sets have no elements in common:
+
+```Go
+fmt.Println(numberSet1) // Set[int]{1, 3, 5}
+fmt.Println(numberSet2) // Set[int]{2, 4, 6}
+fmt.Println(numberSet1.IsDisjoint(numberSet2)) // true
 ```
