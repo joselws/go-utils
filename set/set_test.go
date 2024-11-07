@@ -3,6 +3,7 @@ package set
 import (
 	"fmt"
 	"slices"
+	"sync"
 	"testing"
 )
 
@@ -23,7 +24,7 @@ func TestSetNoLength(t *testing.T) {
 }
 
 func TestAddNewItem(t *testing.T) {
-	set := Set[rune]{Items: make(map[rune]bool)}
+	set := NewSet[rune]()
 	set.Add('a')
 	if set.Length() != 1 {
 		t.Error("Error at AddNewItem", set)
@@ -31,7 +32,8 @@ func TestAddNewItem(t *testing.T) {
 }
 
 func TestAddExistingItem(t *testing.T) {
-	set := Set[rune]{Items: map[rune]bool{'a': true}}
+	set := NewSet[rune]()
+	set.Add('a')
 	set.Add('a')
 	if set.Length() != 1 {
 		t.Error("Set should have 1 item, got", set)
@@ -39,46 +41,54 @@ func TestAddExistingItem(t *testing.T) {
 }
 
 func TestContainsExistingItem(t *testing.T) {
-	set := Set[rune]{Items: map[rune]bool{'a': true}}
+	set := NewSet[rune]()
+	set.Add('a')
 	if !set.Contains('a') {
 		t.Error("Set should contain a", set)
 	}
 }
 
 func TestNotContainsItem(t *testing.T) {
-	set := Set[rune]{Items: map[rune]bool{'a': true}}
+	set := NewSet[rune]()
+	set.Add('a')
 	if set.Contains('b') {
 		t.Error("Set should not contain b", set)
 	}
 }
 
 func TestIsSupersetOf(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
-	set2 := Set[int]{Items: map[int]bool{1: true, 2: true}}
+	set1 := NewSet[int]()
+	set1.AddFromSlice([]int{1, 2, 3})
+	set2 := NewSet[int]()
+	set2.AddFromSlice([]int{1, 2})
 	if !set1.IsSupersetOf(set2) {
 		t.Errorf("%v should be superset of %v", set1, set2)
 	}
 }
 
 func TestIsSupersetOfEqualSet(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
-	set2 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set1 := NewSet[int]()
+	set1.AddFromSlice([]int{1, 2, 3})
+	set2 := NewSet[int]()
+	set2.AddFromSlice([]int{1, 2, 3})
 	if !set1.IsSupersetOf(set2) {
 		t.Errorf("%v should be superset of %v", set1, set2)
 	}
 }
 
 func TestIsSupersetOfSubset(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true}}
-	set2 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set1 := NewSet[int]()
+	set1.AddFromSlice([]int{1, 2})
+	set2 := NewSet[int]()
+	set2.AddFromSlice([]int{1, 2, 3})
 	if set1.IsSupersetOf(set2) {
 		t.Errorf("%v should be superset of %v", set1, set2)
 	}
 }
 
 func TestIsSupersetOfEmpty(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{}}
-	set2 := Set[int]{Items: map[int]bool{}}
+	set1 := NewSet[int]()
+	set2 := NewSet[int]()
 	if !set1.IsSupersetOf(set2) {
 		t.Errorf("%v should be superset of %v", set1, set2)
 	}
@@ -157,39 +167,39 @@ func TestRemoveFromEmptySet(t *testing.T) {
 }
 
 func TestIsSubsetOf(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true}}
-	set2 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set1 := &Set[int]{Items: map[int]bool{1: true, 2: true}}
+	set2 := &Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
 	if !set1.IsSubsetOf(set2) {
 		t.Errorf("%v should be subset of %v", set1, set2)
 	}
 }
 
 func TestIsSubsetOfEqualSet(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
-	set2 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set1 := &Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set2 := &Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
 	if !set1.IsSubsetOf(set2) {
 		t.Errorf("%v should be subset of %v", set1, set2)
 	}
 }
 
 func TestIsSubsetOfSuperset(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
-	set2 := Set[int]{Items: map[int]bool{1: true, 2: true}}
+	set1 := &Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set2 := &Set[int]{Items: map[int]bool{1: true, 2: true}}
 	if set1.IsSubsetOf(set2) {
 		t.Errorf("%v should be subset of %v", set2, set1)
 	}
 }
 
 func TestIsSubsetOfEmpty(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{}}
-	set2 := Set[int]{Items: map[int]bool{}}
+	set1 := &Set[int]{Items: map[int]bool{}}
+	set2 := &Set[int]{Items: map[int]bool{}}
 	if !set1.IsSubsetOf(set2) {
 		t.Errorf("%v should be subset of %v", set1, set2)
 	}
 }
 
 func TestString(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set1 := &Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
 	var setString string = fmt.Sprint(set1)
 	if setString != "Set[int]{1, 2, 3}" {
 		t.Error("Expected Set[int]{1, 2, 3} String() output, not", setString)
@@ -197,7 +207,7 @@ func TestString(t *testing.T) {
 }
 
 func TestEmptyString(t *testing.T) {
-	set1 := Set[int]{Items: map[int]bool{}}
+	set1 := &Set[int]{Items: map[int]bool{}}
 	var setString string = fmt.Sprint(set1)
 	if setString != "Set[int]{}" {
 		t.Error("Expected Set[int]{} String() output, not", setString)
@@ -318,5 +328,130 @@ func TestSymmetricDifference(t *testing.T) {
 	}
 	if !set1.SymmetricDifference(set2).Equal(set2.SymmetricDifference(set1)) {
 		t.Error("Symmetric difference should yield the same result both ways")
+	}
+}
+
+func TestConcurrencyAdd(t *testing.T) {
+	t.Run("Check overwrites on Add", func(t *testing.T) {
+		numbers := make([]int, 0, 1000)
+		for i := 0; i < 100; i++ {
+			s := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+			numbers = slices.Insert(numbers, 0, s...)
+		}
+
+		set := NewSet[int]()
+		var wg sync.WaitGroup
+		wg.Add(1000)
+		for _, number := range numbers {
+			go func(n int) {
+				set.Add(n)
+				wg.Done()
+			}(number)
+		}
+		wg.Wait()
+
+		if set.Length() != 10 {
+			t.Error("set.Add() is not concurrent safe.")
+		}
+	})
+
+	t.Run("Check concurrent writes for different numbers on Add", func(t *testing.T) {
+		numbers := make([]int, 0, 1000)
+		for i := 0; i < 1000; i++ {
+			numbers = append(numbers, i)
+		}
+
+		set := NewSet[int]()
+		var wg sync.WaitGroup
+		wg.Add(1000)
+		for _, number := range numbers {
+			go func(n int) {
+				set.Add(n)
+				wg.Done()
+			}(number)
+		}
+		wg.Wait()
+
+		if set.Length() != 1000 {
+			t.Error("set.Add() is not concurrent safe.")
+		}
+	})
+}
+
+func TestConcurrencyRemove(t *testing.T) {
+	t.Run("Check removing repeated elements", func(t *testing.T) {
+		numbers := make([]int, 0, 1000)
+		for i := 0; i < 100; i++ {
+			s := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+			numbers = slices.Insert(numbers, 0, s...)
+		}
+
+		set := NewSet[int]()
+		set.AddFromSlice(numbers)
+		var wg sync.WaitGroup
+		wg.Add(1000)
+		for _, number := range numbers {
+			go func(n int) {
+				set.Remove(n)
+				wg.Done()
+			}(number)
+		}
+		wg.Wait()
+
+		if set.Length() != 0 {
+			t.Error("set.Remove() is not concurrent safe.")
+		}
+	})
+
+	t.Run("Check removing different elements", func(t *testing.T) {
+		numbers := make([]int, 0, 1000)
+		for i := 0; i < 1000; i++ {
+			numbers = append(numbers, i)
+		}
+
+		set := NewSet[int]()
+		set.AddFromSlice(numbers)
+		var wg sync.WaitGroup
+		wg.Add(1000)
+		for _, number := range numbers {
+			go func(n int) {
+				set.Remove(n)
+				wg.Done()
+			}(number)
+		}
+		wg.Wait()
+
+		if set.Length() != 0 {
+			t.Error("set.Remove() is not concurrent safe.")
+		}
+	})
+}
+
+// Only applicable with the -race flag to check for race conditions
+func TestSetConcurrencyAddRemove(t *testing.T) {
+	numbers := make([]int, 0, 1000)
+	for i := 0; i < 100; i++ {
+		s := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+		numbers = slices.Insert(numbers, 0, s...)
+	}
+
+	set := NewSet[int]()
+	var wg sync.WaitGroup
+	wg.Add(2000)
+	for _, number := range numbers {
+		go func(n int) {
+			set.Add(n)
+			wg.Done()
+		}(number)
+	}
+	for _, number := range numbers {
+		go func(n int) {
+			set.Remove(n)
+			wg.Done()
+		}(number)
+	}
+	wg.Wait()
+	if !(set.Length() >= 0) {
+		t.Error("Set is not concurrent safe.")
 	}
 }
