@@ -51,6 +51,8 @@ func (thisSet *Set[T]) AddFromSlice(items []T) {
 
 // Remove item from set. Does nothing if it doesn't exist
 func (thisSet *Set[T]) Remove(item T) {
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
 	delete(thisSet.Items, item)
 }
 
