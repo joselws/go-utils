@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"strings"
+	"sync"
 
 	"github.com/joselws/go-utils/mytypes"
 )
@@ -21,6 +22,7 @@ type SetTypes interface {
 // The Set is a data structure that works with a map under the hood
 type Set[T SetTypes] struct {
 	Items map[T]bool
+	mutex sync.Mutex
 }
 
 // Use this function whenever you want a new set
@@ -35,6 +37,8 @@ func (thisSet *Set[T]) Length() int {
 
 // Add an new item to the set. Nothing happens if it already exists
 func (thisSet *Set[T]) Add(item T) {
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
 	thisSet.Items[item] = true
 }
 
@@ -75,7 +79,7 @@ you passed as an argument
 
 Returns true if it is a superset, and false otherwise
 */
-func (thisSet *Set[T]) IsSupersetOf(otherSet Set[T]) bool {
+func (thisSet *Set[T]) IsSupersetOf(otherSet *Set[T]) bool {
 	for key := range otherSet.Items {
 		if !thisSet.Contains(key) {
 			return false
@@ -91,7 +95,7 @@ you passed as an argument
 
 Returns true if it is a subset, and false otherwise
 */
-func (thisSet *Set[T]) IsSubsetOf(otherSet Set[T]) bool {
+func (thisSet *Set[T]) IsSubsetOf(otherSet *Set[T]) bool {
 	for key := range thisSet.Items {
 		if !otherSet.Contains(key) {
 			return false
@@ -172,7 +176,7 @@ func (thisSet *Set[T]) Equal(otherSet *Set[T]) bool {
 }
 
 // Outputs set in this format when printed: Set[T]{item1, item2}
-func (thisSet Set[T]) String() string {
+func (thisSet *Set[T]) String() string {
 	var itemsStringSlice []string
 	setSlice := thisSet.ToSlice()
 	for _, item := range setSlice {
