@@ -351,7 +351,7 @@ func TestConcurrencyAdd(t *testing.T) {
 		wg.Wait()
 
 		if set.Length() != 10 {
-			t.Errorf("set.Add() is not concurrent safe.")
+			t.Error("set.Add() is not concurrent safe.")
 		}
 	})
 
@@ -373,7 +373,7 @@ func TestConcurrencyAdd(t *testing.T) {
 		wg.Wait()
 
 		if set.Length() != 1000 {
-			t.Errorf("set.Add() is not concurrent safe.")
+			t.Error("set.Add() is not concurrent safe.")
 		}
 	})
 }
@@ -399,7 +399,7 @@ func TestConcurrencyRemove(t *testing.T) {
 		wg.Wait()
 
 		if set.Length() != 0 {
-			t.Errorf("set.Remove() is not concurrent safe.")
+			t.Error("set.Remove() is not concurrent safe.")
 		}
 	})
 
@@ -422,7 +422,36 @@ func TestConcurrencyRemove(t *testing.T) {
 		wg.Wait()
 
 		if set.Length() != 0 {
-			t.Errorf("set.Remove() is not concurrent safe.")
+			t.Error("set.Remove() is not concurrent safe.")
 		}
 	})
+}
+
+// Only applicable with the -race flag to check for race conditions
+func TestSetConcurrencyAddRemove(t *testing.T) {
+	numbers := make([]int, 0, 1000)
+	for i := 0; i < 100; i++ {
+		s := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+		numbers = slices.Insert(numbers, 0, s...)
+	}
+
+	set := NewSet[int]()
+	var wg sync.WaitGroup
+	wg.Add(2000)
+	for _, number := range numbers {
+		go func(n int) {
+			set.Add(n)
+			wg.Done()
+		}(number)
+	}
+	for _, number := range numbers {
+		go func(n int) {
+			set.Remove(n)
+			wg.Done()
+		}(number)
+	}
+	wg.Wait()
+	if !(set.Length() >= 0) {
+		t.Error("Set is not concurrent safe.")
+	}
 }
