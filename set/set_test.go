@@ -199,10 +199,10 @@ func TestIsSubsetOfEmpty(t *testing.T) {
 }
 
 func TestString(t *testing.T) {
-	set1 := &Set[int]{Items: map[int]bool{1: true, 2: true, 3: true}}
+	set1 := &Set[int]{Items: map[int]bool{1: true, 2: true}}
 	var setString string = fmt.Sprint(set1)
-	if setString != "Set[int]{1, 2, 3}" {
-		t.Error("Expected Set[int]{1, 2, 3} String() output, not", setString)
+	if setString != "Set[int]{1, 2}" && setString != "Set[int]{2, 1}" {
+		t.Error("Expected Set[int]{1, 2} String() output, not", setString)
 	}
 }
 
@@ -219,9 +219,6 @@ func TestToSlice(t *testing.T) {
 	var setSlice []int = set1.ToSlice()
 	if len(setSlice) != 3 {
 		t.Error("Slice length should be 3, not", len(setSlice))
-	}
-	if !slices.IsSorted(setSlice) {
-		t.Error("Slice should be sorted in ascending order, not", setSlice)
 	}
 }
 

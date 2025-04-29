@@ -5,28 +5,18 @@ import (
 	"fmt"
 	"maps"
 	"reflect"
-	"slices"
 	"strings"
 	"sync"
-
-	"github.com/joselws/go-utils/mytypes"
 )
 
-/*
-A Set can only be initialized with the following built-in types.
-*/
-type SetTypes interface {
-	mytypes.Number | string
-}
-
 // The Set is a data structure that works with a map under the hood
-type Set[T SetTypes] struct {
+type Set[T comparable] struct {
 	Items map[T]bool
 	mutex sync.Mutex
 }
 
 // Use this function whenever you want a new set
-func NewSet[T SetTypes]() *Set[T] {
+func NewSet[T comparable]() *Set[T] {
 	return &Set[T]{Items: make(map[T]bool)}
 }
 
@@ -70,7 +60,7 @@ func (thisSet *Set[T]) ToSlice() []T {
 	for item := range thisSet.Items {
 		setSlice = append(setSlice, item)
 	}
-	slices.Sort(setSlice)
+	// slices.Sort(setSlice)
 	return setSlice
 }
 

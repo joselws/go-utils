@@ -46,20 +46,20 @@ func TestPopOnEmptyStack(t *testing.T) {
 	}
 }
 
-func TestTopValueEmptyStack(t *testing.T) {
+func TestPeekNextEmptyStack(t *testing.T) {
 	myStack := NewStack[int]()
-	_, err := myStack.TopValue()
+	_, err := myStack.PeekNext()
 	if err == nil {
 		t.Error("Error should not be nil, but", err)
 	}
 }
 
-func TestTopValue(t *testing.T) {
+func TestPeekNext(t *testing.T) {
 	myStack := NewStack[int]()
 	myStack.Push(100)
 	myStack.Push(200)
 	myStack.Push(300)
-	topValue, err := myStack.TopValue()
+	topValue, err := myStack.PeekNext()
 	if err != nil {
 		t.Error("Error should be nil, not", err)
 	}

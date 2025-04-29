@@ -46,11 +46,11 @@ func (thisStack *Stack[T]) Pop() (T, error) {
 	return nextElement, nil
 }
 
-func (thisStack *Stack[T]) TopValue() (T, error) {
+func (thisStack *Stack[T]) PeekNext() (T, error) {
 	var nextElement T
 	element := thisStack.Elements.Back()
 	if element == nil {
-		return nextElement, errors.New("Cannot TopValue() from empty stack.")
+		return nextElement, errors.New("Cannot PeekNext() from empty stack.")
 	}
 	nextElement, ok := element.Value.(T)
 	if !ok {
