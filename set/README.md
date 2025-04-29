@@ -27,17 +27,7 @@ import "github.com/joselws/go-utils/set"
 
 ### Data types
 
-These are the available data types for `Set`:
-
-- All `int` and `uint` types
-    - `int`, `int8`, `int16`, `int32`, and `int64`
-    - `uint`, `uint8`, `uint16`, `uint32`, and `uint64`
-- `float32` and `float64`
-- `string`
-- `rune`
-- `byte`
-
-For the time being, you cannot use `Set` with `maps`, `slices`, `structs`, `Set`, or pointer values.
+All `comparable` data types are available for `Set`.
 
 ### Initialization
 
@@ -109,7 +99,7 @@ nameSet.Contains("Luis") // false
 
 **ToSlice**
 
-`ToSlice() []T` returns the items within the set in a slice of the same type `T` as the set in ascending order:
+`ToSlice() []T` returns the items within the set in a slice of the same type `T` as the set:
 
 ```Go
 fmt.Println(nameSet) // Set[string]{"Jose", "Luis"}

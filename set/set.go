@@ -54,7 +54,7 @@ func (thisSet *Set[T]) Contains(item T) bool {
 	return thisSet.Items[item]
 }
 
-// Returns a slice of the items of the set sorted in ascending order
+// Returns a slice of the items of the set
 func (thisSet *Set[T]) ToSlice() []T {
 	var setSlice []T
 	for item := range thisSet.Items {
