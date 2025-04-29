@@ -45,3 +45,16 @@ func (thisStack *Stack[T]) Pop() (T, error) {
 	thisStack.Elements.Remove(element)
 	return nextElement, nil
 }
+
+func (thisStack *Stack[T]) TopValue() (T, error) {
+	var nextElement T
+	element := thisStack.Elements.Back()
+	if element == nil {
+		return nextElement, errors.New("Cannot TopValue() from empty stack.")
+	}
+	nextElement, ok := element.Value.(T)
+	if !ok {
+		return nextElement, errors.New(fmt.Sprintf("Mismatch type of Stack type and %T", element.Value))
+	}
+	return nextElement, nil
+}

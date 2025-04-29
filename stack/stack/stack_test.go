@@ -45,3 +45,28 @@ func TestPopOnEmptyStack(t *testing.T) {
 		t.Error("Error should not be nil, but", err)
 	}
 }
+
+func TestTopValueEmptyStack(t *testing.T) {
+	myStack := NewStack[int]()
+	_, err := myStack.TopValue()
+	if err == nil {
+		t.Error("Error should not be nil, but", err)
+	}
+}
+
+func TestTopValue(t *testing.T) {
+	myStack := NewStack[int]()
+	myStack.Push(100)
+	myStack.Push(200)
+	myStack.Push(300)
+	topValue, err := myStack.TopValue()
+	if err != nil {
+		t.Error("Error should be nil, not", err)
+	}
+	if topValue != 300 {
+		t.Error("Top Stack item should be 300, not", topValue)
+	}
+	if myStack.Len() != 3 {
+		t.Error("Stack length should be 3, not", myStack.Len())
+	}
+}
