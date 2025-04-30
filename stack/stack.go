@@ -16,8 +16,8 @@ type Stack[T any] struct {
 }
 
 // Stack constructor.
-func NewStack[T any]() Stack[T] {
-	return Stack[T]{elements: list.New()}
+func NewStack[T any]() *Stack[T] {
+	return &Stack[T]{elements: list.New()}
 }
 
 // Get the current length of the stack.
