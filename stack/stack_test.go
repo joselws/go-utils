@@ -70,3 +70,18 @@ func TestPeekNext(t *testing.T) {
 		t.Error("Stack length should be 3, not", myStack.Len())
 	}
 }
+
+func TestStackIsEmpty(t *testing.T) {
+	myStack := NewStack[int]()
+	if !myStack.IsEmpty() {
+		t.Error("Stack should be empty")
+	}
+}
+
+func TestStackNotEmpty(t *testing.T) {
+	myStack := NewStack[int]()
+	myStack.Push(100)
+	if myStack.IsEmpty() {
+		t.Error("Stack should not be empty")
+	}
+}

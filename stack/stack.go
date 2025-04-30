@@ -58,3 +58,7 @@ func (thisStack *Stack[T]) PeekNext() (T, error) {
 	}
 	return nextElement, nil
 }
+
+func (thisStack *Stack[T]) IsEmpty() bool {
+	return thisStack.Len() == 0
+}
