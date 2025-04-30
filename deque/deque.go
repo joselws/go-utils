@@ -6,29 +6,32 @@ Based on the doubly linked list structure
 
 package deque
 
-import "github.com/joselws/go-utils/linked_lists/dll"
+import (
+	"container/list"
+)
 
-type Deque[T comparable] struct {
-	list *dll.LinkedList[T]
+type Deque[T any] struct {
+	list *list.List
 	size int
 }
 
-func NewDeque[T comparable](size int) *Deque[T] {
+// A 0 size deque is unbounded.
+func NewDeque[T any](size int) *Deque[T] {
 	return &Deque[T]{
-		list: dll.NewDoublyLinkedList[T](),
+		list: list.New(),
 		size: size,
 	}
 }
 
 func (deque *Deque[T]) Len() int {
-	return deque.list.Length
+	return deque.list.Len()
 }
 
 func (deque *Deque[T]) IsFull() bool {
 	if deque.size == 0 {
 		return false
 	}
-	if deque.size == deque.list.Length {
+	if deque.size == deque.list.Len() {
 		return true
 	}
 	return false
@@ -38,6 +41,6 @@ func (deque *Deque[T]) AppendRight(value T) bool {
 	if deque.IsFull() {
 		return false
 	}
-	deque.list.AppendRight(value)
+	deque.list.PushBack(value)
 	return true
 }

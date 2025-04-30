@@ -39,3 +39,13 @@ func TestAppendRight(t *testing.T) {
 		t.Error("")
 	}
 }
+
+func TestAppendRightFull(t *testing.T) {
+	deque := NewDeque[int](3)
+	deque.AppendRight(5)
+	deque.AppendRight(3)
+	deque.AppendRight(1)
+	if deque.AppendRight(2) {
+		t.Error("AppendRight should return false")
+	}
+}
