@@ -1,4 +1,4 @@
-package dequell
+package deque
 
 import "testing"
 

@@ -8,9 +8,25 @@ This was made with Go version 1.23.
 
 To install this library, run the following code snippet in your terminal at your Go project folder location:
 
-```
+```bash
 go get github.com/joselws/go-utils
+
 ```
+
+## Tests
+
+Run all packages tests with:
+
+```bash
+go test ./...
+```
+
+Or a selected package test with:
+
+```bash
+go test ./set
+```
+
 
 ## Available packages
 
