@@ -12,49 +12,49 @@ import (
 )
 
 type Stack[T any] struct {
-	Elements *list.List
+	elements *list.List
 }
 
 // Stack constructor.
 func NewStack[T any]() Stack[T] {
-	return Stack[T]{Elements: list.New()}
+	return Stack[T]{elements: list.New()}
 }
 
 // Get the current length of the stack.
 func (thisStack *Stack[T]) Len() int {
-	return thisStack.Elements.Len()
+	return thisStack.elements.Len()
 }
 
 // Add a new item into the stack.
 func (thisStack *Stack[T]) Push(item T) {
-	thisStack.Elements.PushBack(item)
+	thisStack.elements.PushBack(item)
 }
 
 // Remove next item of the stack and return its value.
 // Returns error if the stack is empty.
 func (thisStack *Stack[T]) Pop() (T, error) {
 	var nextElement T
-	element := thisStack.Elements.Back()
+	element := thisStack.elements.Back()
 	if element == nil {
-		return nextElement, errors.New("Cannot Pop() from empty stack.")
+		return nextElement, errors.New("cannot Pop() from empty stack")
 	}
 	nextElement, ok := element.Value.(T)
 	if !ok {
-		return nextElement, errors.New(fmt.Sprintf("Mismatch type of Stack type and %T", element.Value))
+		return nextElement, fmt.Errorf("mismatch type of Stack type and %T", element.Value)
 	}
-	thisStack.Elements.Remove(element)
+	thisStack.elements.Remove(element)
 	return nextElement, nil
 }
 
 func (thisStack *Stack[T]) PeekNext() (T, error) {
 	var nextElement T
-	element := thisStack.Elements.Back()
+	element := thisStack.elements.Back()
 	if element == nil {
-		return nextElement, errors.New("Cannot PeekNext() from empty stack.")
+		return nextElement, errors.New("cannot PeekNext() from empty stack")
 	}
 	nextElement, ok := element.Value.(T)
 	if !ok {
-		return nextElement, errors.New(fmt.Sprintf("Mismatch type of Stack type and %T", element.Value))
+		return nextElement, fmt.Errorf("mismatch type of Stack type and %T", element.Value)
 	}
 	return nextElement, nil
 }
