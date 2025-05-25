@@ -18,7 +18,7 @@ type Stack[T any] struct {
 	deque *deque.Deque[T]
 }
 
-// Stack constructor.
+// Stacks with size 0 are unbounded.
 func NewStack[T any](size int) *Stack[T] {
 	return &Stack[T]{deque: deque.NewDeque[T](size)}
 }
