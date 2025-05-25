@@ -107,3 +107,52 @@ func TestAppendLeftFull(t *testing.T) {
 		t.Errorf("AppendLeft should return %s", ErrFullDeque)
 	}
 }
+
+func TestPopLeft(t *testing.T) {
+	deque := NewDeque[int](3)
+	deque.AppendLeft(5)
+	deque.AppendLeft(3)
+	value, err := deque.PopLeft()
+	if err != nil {
+		t.Errorf("PopLeft should not return an error: %s", err)
+	}
+	if value != 3 {
+		t.Errorf("PopLeft should return 3, not %v", value)
+	}
+	if deque.Len() != 1 {
+		t.Errorf("Deque length should be 1, not %v", deque.Len())
+	}
+}
+
+func TestPopLeftEmpty(t *testing.T) {
+	deque := NewDeque[int](3)
+	_, err := deque.PopLeft()
+	if err == nil {
+		t.Errorf("PopLeft should return %s", ErrEmptyDeque)
+	}
+}
+
+func TestAppendLeftRight(t *testing.T) {
+	deque := NewDeque[int](3)
+	deque.AppendLeft(5)
+	deque.AppendRight(3)
+	deque.AppendLeft(1)
+	val1, err := deque.PopLeft()   // should be 1
+	val2, err2 := deque.PopRight() // should be 3
+	if deque.Len() != 1 {
+		t.Errorf("Deque length should be 2, not %v", deque.Len())
+	}
+	if val1 != 1 {
+		t.Errorf("PopLeft should return 1, not %v", val1)
+	}
+	if err != nil {
+		t.Errorf("PopLeft should not return an error: %s", err)
+	}
+	if val2 != 3 {
+		t.Errorf("PopRight should return 3, not %v", val2)
+	}
+	if err2 != nil {
+		t.Errorf("PopRight should not return an error: %s", err2)
+	}
+
+}
