@@ -86,3 +86,11 @@ func (deque *Deque[T]) PeekRight() (T, error) {
 	element := deque.list.Front()
 	return element.Value.(T), nil
 }
+
+func (deque *Deque[T]) PeekLeft() (T, error) {
+	if deque.IsEmpty() {
+		return *new(T), ErrEmptyDeque
+	}
+	element := deque.list.Back()
+	return element.Value.(T), nil
+}
