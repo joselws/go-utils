@@ -87,3 +87,23 @@ func TestPopRightEmpty(t *testing.T) {
 		t.Errorf("PopRight should return %s", ErrEmptyDeque)
 	}
 }
+
+func TestAppendLeft(t *testing.T) {
+	deque := NewDeque[int](3)
+	deque.AppendLeft(5)
+	deque.AppendLeft(3)
+	if deque.Len() != 2 {
+		t.Errorf("Deque length should be 2, not %v", deque.Len())
+	}
+}
+
+func TestAppendLeftFull(t *testing.T) {
+	deque := NewDeque[int](3)
+	deque.AppendLeft(5)
+	deque.AppendLeft(3)
+	deque.AppendLeft(1)
+	err := deque.AppendLeft(2)
+	if err == nil {
+		t.Errorf("AppendLeft should return %s", ErrFullDeque)
+	}
+}

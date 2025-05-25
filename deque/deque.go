@@ -49,7 +49,7 @@ func (deque *Deque[T]) AppendRight(value T) error {
 	if deque.IsFull() {
 		return ErrFullDeque
 	}
-	deque.list.PushBack(value)
+	deque.list.PushFront(value)
 	return nil
 }
 
@@ -57,7 +57,15 @@ func (deque *Deque[T]) PopRight() (T, error) {
 	if deque.IsEmpty() {
 		return *new(T), ErrEmptyDeque
 	}
-	element := deque.list.Back()
+	element := deque.list.Front()
 	deque.list.Remove(element)
 	return element.Value.(T), nil
+}
+
+func (deque *Deque[T]) AppendLeft(value T) error {
+	if deque.IsFull() {
+		return ErrFullDeque
+	}
+	deque.list.PushBack(value)
+	return nil
 }
