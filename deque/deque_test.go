@@ -63,3 +63,27 @@ func TestAppendRightFull(t *testing.T) {
 		t.Errorf("AppendRight should return %s", ErrFullDeque)
 	}
 }
+
+func TestPopRight(t *testing.T) {
+	deque := NewDeque[int](3)
+	deque.AppendRight(5)
+	deque.AppendRight(3)
+	value, err := deque.PopRight()
+	if err != nil {
+		t.Errorf("PopRight should not return an error: %s", err)
+	}
+	if value != 3 {
+		t.Errorf("PopRight should return 3, not %v", value)
+	}
+	if deque.Len() != 1 {
+		t.Errorf("Deque length should be 1, not %v", deque.Len())
+	}
+}
+
+func TestPopRightEmpty(t *testing.T) {
+	deque := NewDeque[int](3)
+	_, err := deque.PopRight()
+	if err == nil {
+		t.Errorf("PopRight should return %s", ErrEmptyDeque)
+	}
+}

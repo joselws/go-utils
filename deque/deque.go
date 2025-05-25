@@ -52,3 +52,12 @@ func (deque *Deque[T]) AppendRight(value T) error {
 	deque.list.PushBack(value)
 	return nil
 }
+
+func (deque *Deque[T]) PopRight() (T, error) {
+	if deque.IsEmpty() {
+		return *new(T), ErrEmptyDeque
+	}
+	element := deque.list.Back()
+	deque.list.Remove(element)
+	return element.Value.(T), nil
+}
