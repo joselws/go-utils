@@ -9,6 +9,7 @@ package deque
 import (
 	"container/list"
 	"errors"
+	"sync"
 )
 
 var ErrEmptyDeque = errors.New("deque is empty")
@@ -17,6 +18,7 @@ var ErrFullDeque = errors.New("deque is full")
 type Deque[T any] struct {
 	list *list.List
 	size int
+	mu   sync.Mutex
 }
 
 // A 0 size deque is unbounded.
@@ -28,6 +30,8 @@ func NewDeque[T any](size int) *Deque[T] {
 }
 
 func (deque *Deque[T]) Len() int {
+	deque.mu.Lock()
+	defer deque.mu.Unlock()
 	return deque.list.Len()
 }
 
@@ -35,10 +39,7 @@ func (deque *Deque[T]) IsFull() bool {
 	if deque.size == 0 {
 		return false
 	}
-	if deque.size == deque.list.Len() {
-		return true
-	}
-	return false
+	return deque.size == deque.Len()
 }
 
 func (deque *Deque[T]) IsEmpty() bool {
