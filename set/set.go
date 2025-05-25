@@ -22,6 +22,8 @@ func NewSet[T comparable]() *Set[T] {
 
 // Returns the length of the set
 func (thisSet *Set[T]) Length() int {
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
 	return len(thisSet.Items)
 }
 
@@ -51,16 +53,19 @@ Checks whether an item is in the set.
 Returns true if the item is in the set, and false otherwise
 */
 func (thisSet *Set[T]) Contains(item T) bool {
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
 	return thisSet.Items[item]
 }
 
 // Returns a slice of the items of the set
 func (thisSet *Set[T]) ToSlice() []T {
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
 	var setSlice []T
 	for item := range thisSet.Items {
 		setSlice = append(setSlice, item)
 	}
-	// slices.Sort(setSlice)
 	return setSlice
 }
 
@@ -72,6 +77,9 @@ you passed as an argument
 Returns true if it is a superset, and false otherwise
 */
 func (thisSet *Set[T]) IsSupersetOf(otherSet *Set[T]) bool {
+	otherSet.mutex.Lock()
+	defer otherSet.mutex.Unlock()
+
 	for key := range otherSet.Items {
 		if !thisSet.Contains(key) {
 			return false
@@ -88,6 +96,9 @@ you passed as an argument
 Returns true if it is a subset, and false otherwise
 */
 func (thisSet *Set[T]) IsSubsetOf(otherSet *Set[T]) bool {
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
+
 	for key := range thisSet.Items {
 		if !otherSet.Contains(key) {
 			return false
@@ -101,6 +112,8 @@ Calculates the intersection of your set and another set you pass as arguments,
 and returns these common values in a new set object
 */
 func (thisSet *Set[T]) Intersection(otherSet *Set[T]) *Set[T] {
+	otherSet.mutex.Lock()
+	defer otherSet.mutex.Unlock()
 	intersection := NewSet[T]()
 	for key := range otherSet.Items {
 		if thisSet.Contains(key) {
@@ -115,6 +128,11 @@ Calculates the union of your set and another set you pass as arguments,
 and returns these common values in a new set object
 */
 func (thisSet *Set[T]) Union(otherSet *Set[T]) *Set[T] {
+	otherSet.mutex.Lock()
+	defer otherSet.mutex.Unlock()
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
+
 	union := NewSet[T]()
 	for key := range otherSet.Items {
 		union.Add(key)
@@ -130,6 +148,8 @@ Returns true if both sets are disjointed, otherwise returns false.
 Two sets are disjointed if they have no elements in common.
 */
 func (thisSet *Set[T]) IsDisjoint(otherSet *Set[T]) bool {
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
 	for element := range thisSet.Items {
 		if otherSet.Contains(element) {
 			return false
@@ -141,6 +161,8 @@ func (thisSet *Set[T]) IsDisjoint(otherSet *Set[T]) bool {
 // Returns a copy of the set
 func (thisSet *Set[T]) Copy() *Set[T] {
 	copy := NewSet[T]()
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
 	maps.Copy(copy.Items, thisSet.Items)
 	return copy
 }
@@ -148,6 +170,8 @@ func (thisSet *Set[T]) Copy() *Set[T] {
 // Performs thisSet - otherSet
 func (thisSet *Set[T]) Difference(otherSet *Set[T]) *Set[T] {
 	result := thisSet.Copy()
+	otherSet.mutex.Lock()
+	defer otherSet.mutex.Unlock()
 	for element := range otherSet.Items {
 		result.Remove(element)
 	}
@@ -164,6 +188,10 @@ func (thisSet *Set[T]) SymmetricDifference(otherSet *Set[T]) *Set[T] {
 
 // Returns true if both sets contain the same elements.
 func (thisSet *Set[T]) Equal(otherSet *Set[T]) bool {
+	thisSet.mutex.Lock()
+	defer thisSet.mutex.Unlock()
+	otherSet.mutex.Lock()
+	defer otherSet.mutex.Unlock()
 	return maps.Equal(thisSet.Items, otherSet.Items)
 }
 
