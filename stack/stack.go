@@ -6,59 +6,59 @@ Based on the standard library container/list
 package stack
 
 import (
-	"container/list"
 	"errors"
-	"fmt"
+
+	"github.com/joselws/go-utils/deque"
 )
 
+var ErrEmptyStack = errors.New("stack is empty")
+var ErrFullStack = errors.New("stack is full")
+
 type Stack[T any] struct {
-	elements *list.List
+	deque *deque.Deque[T]
 }
 
 // Stack constructor.
-func NewStack[T any]() *Stack[T] {
-	return &Stack[T]{elements: list.New()}
+func NewStack[T any](size int) *Stack[T] {
+	return &Stack[T]{deque: deque.NewDeque[T](size)}
 }
 
 // Get the current length of the stack.
-func (thisStack *Stack[T]) Len() int {
-	return thisStack.elements.Len()
+func (stack *Stack[T]) Len() int {
+	return stack.deque.Len()
 }
 
 // Add a new item into the stack.
-func (thisStack *Stack[T]) Push(item T) {
-	thisStack.elements.PushBack(item)
+func (stack *Stack[T]) Push(item T) error {
+	err := stack.deque.AppendRight(item)
+	if err != nil {
+		return ErrFullStack
+	}
+	return nil
 }
 
 // Remove next item of the stack and return its value.
 // Returns error if the stack is empty.
-func (thisStack *Stack[T]) Pop() (T, error) {
-	var nextElement T
-	element := thisStack.elements.Back()
-	if element == nil {
-		return nextElement, errors.New("cannot Pop() from empty stack")
+func (stack *Stack[T]) Pop() (T, error) {
+	value, err := stack.deque.PopRight()
+	if err != nil {
+		return *new(T), ErrEmptyStack
 	}
-	nextElement, ok := element.Value.(T)
-	if !ok {
-		return nextElement, fmt.Errorf("mismatch type of Stack type and %T", element.Value)
-	}
-	thisStack.elements.Remove(element)
-	return nextElement, nil
+	return value, nil
 }
 
 func (thisStack *Stack[T]) PeekNext() (T, error) {
-	var nextElement T
-	element := thisStack.elements.Back()
-	if element == nil {
-		return nextElement, errors.New("cannot PeekNext() from empty stack")
+	value, err := thisStack.deque.PeekRight()
+	if err != nil {
+		return *new(T), ErrEmptyStack
 	}
-	nextElement, ok := element.Value.(T)
-	if !ok {
-		return nextElement, fmt.Errorf("mismatch type of Stack type and %T", element.Value)
-	}
-	return nextElement, nil
+	return value, nil
 }
 
-func (thisStack *Stack[T]) IsEmpty() bool {
-	return thisStack.Len() == 0
+func (stack *Stack[T]) IsEmpty() bool {
+	return stack.deque.IsEmpty()
+}
+
+func (stack *Stack[T]) IsFull() bool {
+	return stack.deque.IsFull()
 }

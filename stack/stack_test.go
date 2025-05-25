@@ -4,84 +4,192 @@ import (
 	"testing"
 )
 
-func TestStackCorrectlyInitialized(t *testing.T) {
-	myStack := NewStack[int]()
-	if myStack.Len() != 0 {
-		t.Error("Stack length should be 0, not", myStack.Len())
+func TestNewStack(t *testing.T) {
+	s := NewStack[int](5)
+	if s == nil {
+		t.Error("NewStack returned nil")
+	}
+	if s.Len() != 0 {
+		t.Errorf("NewStack expected length 0, got %d", s.Len())
 	}
 }
 
-func TestPushMethod(t *testing.T) {
-	myStack := NewStack[int]()
-	myStack.Push(100)
-	myStack.Push(200)
-	myStack.Push(300)
-	if myStack.Len() != 3 {
-		t.Error("Stack length should be 3, not", myStack.Len())
+func TestLen(t *testing.T) {
+	s := NewStack[int](5)
+	if s.Len() != 0 {
+		t.Errorf("Expected initial length 0, got %d", s.Len())
+	}
+
+	s.Push(10)
+	if s.Len() != 1 {
+		t.Errorf("Expected length 1 after one push, got %d", s.Len())
+	}
+
+	s.Push(20)
+	if s.Len() != 2 {
+		t.Errorf("Expected length 2 after two pushes, got %d", s.Len())
+	}
+
+	s.Pop()
+	if s.Len() != 1 {
+		t.Errorf("Expected length 1 after one pop, got %d", s.Len())
 	}
 }
 
-func TestPopMethod(t *testing.T) {
-	myStack := NewStack[int]()
-	myStack.Push(100)
-	myStack.Push(200)
-	myStack.Push(300)
-	lastItem, err := myStack.Pop()
+func TestPush(t *testing.T) {
+	s := NewStack[int](2) // Stack with capacity 2
+
+	// Test successful pushes
+	err := s.Push(1)
 	if err != nil {
-		t.Error("Error should be nil, not", err)
+		t.Errorf("Push(1) returned an unexpected error: %v", err)
 	}
-	if myStack.Len() != 2 {
-		t.Error("Stack length should be 2, not", myStack.Len())
+	if s.Len() != 1 {
+		t.Errorf("Expected length 1 after push, got %d", s.Len())
 	}
-	if lastItem != 300 {
-		t.Error("Last Stack item should be 300, not", lastItem)
+
+	err = s.Push(2)
+	if err != nil {
+		t.Errorf("Push(2) returned an unexpected error: %v", err)
+	}
+	if s.Len() != 2 {
+		t.Errorf("Expected length 2 after push, got %d", s.Len())
+	}
+
+	// Test pushing to a full stack
+	err = s.Push(3)
+	if err != ErrFullStack {
+		t.Errorf("Push(3) on full stack expected ErrFullStack, got %v", err)
+	}
+	if s.Len() != 2 { // Length should not change
+		t.Errorf("Expected length 2 after failed push, got %d", s.Len())
 	}
 }
 
-func TestPopOnEmptyStack(t *testing.T) {
-	myStack := NewStack[int]()
-	_, err := myStack.Pop()
-	if err == nil {
-		t.Error("Error should not be nil, but", err)
-	}
-}
+func TestPop(t *testing.T) {
+	s := NewStack[int](3)
 
-func TestPeekNextEmptyStack(t *testing.T) {
-	myStack := NewStack[int]()
-	_, err := myStack.PeekNext()
-	if err == nil {
-		t.Error("Error should not be nil, but", err)
+	// Test Pop on an empty stack
+	_, err := s.Pop()
+	if err != ErrEmptyStack {
+		t.Errorf("Pop on empty stack expected ErrEmptyStack, got %v", err)
+	}
+
+	// Push some elements
+	s.Push(10)
+	s.Push(20)
+	s.Push(30)
+
+	// Test successful pops
+	val, err := s.Pop()
+	if err != nil {
+		t.Errorf("Pop returned an unexpected error: %v", err)
+	}
+	if val != 30 {
+		t.Errorf("Expected Pop to return 30, got %d", val)
+	}
+	if s.Len() != 2 {
+		t.Errorf("Expected length 2 after pop, got %d", s.Len())
+	}
+
+	val, err = s.Pop()
+	if err != nil {
+		t.Errorf("Pop returned an unexpected error: %v", err)
+	}
+	if val != 20 {
+		t.Errorf("Expected Pop to return 20, got %d", val)
+	}
+	if s.Len() != 1 {
+		t.Errorf("Expected length 1 after pop, got %d", s.Len())
+	}
+
+	val, err = s.Pop()
+	if err != nil {
+		t.Errorf("Pop returned an unexpected error: %v", err)
+	}
+	if val != 10 {
+		t.Errorf("Expected Pop to return 10, got %d", val)
+	}
+	if s.Len() != 0 {
+		t.Errorf("Expected length 0 after pop, got %d", s.Len())
+	}
+
+	// Test Pop again on empty stack
+	_, err = s.Pop()
+	if err != ErrEmptyStack {
+		t.Errorf("Pop on empty stack expected ErrEmptyStack, got %v", err)
 	}
 }
 
 func TestPeekNext(t *testing.T) {
-	myStack := NewStack[int]()
-	myStack.Push(100)
-	myStack.Push(200)
-	myStack.Push(300)
-	topValue, err := myStack.PeekNext()
+	s := NewStack[string](3)
+
+	// Test PeekNext on an empty stack
+	_, err := s.PeekNext()
+	if err != ErrEmptyStack {
+		t.Errorf("PeekNext on empty stack expected ErrEmptyStack, got %v", err)
+	}
+
+	s.Push("apple")
+	s.Push("banana")
+
+	// Test successful PeekNext
+	val, err := s.PeekNext()
 	if err != nil {
-		t.Error("Error should be nil, not", err)
+		t.Errorf("PeekNext returned an unexpected error: %v", err)
 	}
-	if topValue != 300 {
-		t.Error("Top Stack item should be 300, not", topValue)
+	if val != "banana" {
+		t.Errorf("Expected PeekNext to return 'banana', got '%s'", val)
 	}
-	if myStack.Len() != 3 {
-		t.Error("Stack length should be 3, not", myStack.Len())
+	if s.Len() != 2 { // Length should not change after PeekNext
+		t.Errorf("Length changed after PeekNext, expected 2, got %d", s.Len())
+	}
+
+	s.Push("cherry")
+	val, err = s.PeekNext()
+	if err != nil {
+		t.Errorf("PeekNext returned an unexpected error: %v", err)
+	}
+	if val != "cherry" {
+		t.Errorf("Expected PeekNext to return 'cherry', got '%s'", val)
 	}
 }
 
-func TestStackIsEmpty(t *testing.T) {
-	myStack := NewStack[int]()
-	if !myStack.IsEmpty() {
-		t.Error("Stack should be empty")
+func TestIsEmpty(t *testing.T) {
+	s := NewStack[int](2)
+	if !s.IsEmpty() {
+		t.Errorf("Expected IsEmpty to be true on new stack, got false")
+	}
+
+	s.Push(1)
+	if s.IsEmpty() {
+		t.Errorf("Expected IsEmpty to be false after push, got true")
+	}
+
+	s.Pop()
+	if !s.IsEmpty() {
+		t.Errorf("Expected IsEmpty to be true after popping last element, got false")
 	}
 }
 
-func TestStackNotEmpty(t *testing.T) {
-	myStack := NewStack[int]()
-	myStack.Push(100)
-	if myStack.IsEmpty() {
-		t.Error("Stack should not be empty")
+func TestIsFull(t *testing.T) {
+	s := NewStack[int](2)
+	if s.IsFull() {
+		t.Errorf("Expected IsFull to be false on new stack, got true")
+	}
+
+	s.Push(1)
+	if s.IsFull() {
+		t.Errorf("Expected IsFull to be false after one push, got true")
+	}
+
+	s.Push(2)
+	if !s.IsFull() {
+		t.Errorf("Expected IsFull to be true after filling stack, got false")
+	}
+
+	s.Pop()
+	if s.IsFull() {
+		t.Errorf("Expected IsFull to be false after pop from full stack, got true")
 	}
 }
