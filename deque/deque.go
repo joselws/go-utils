@@ -8,7 +8,11 @@ package deque
 
 import (
 	"container/list"
+	"errors"
 )
+
+var ErrEmptyDeque = errors.New("deque is empty")
+var ErrFullDeque = errors.New("deque is full")
 
 type Deque[T any] struct {
 	list *list.List
@@ -35,6 +39,10 @@ func (deque *Deque[T]) IsFull() bool {
 		return true
 	}
 	return false
+}
+
+func (deque *Deque[T]) IsEmpty() bool {
+	return deque.Len() == 0
 }
 
 func (deque *Deque[T]) AppendRight(value T) bool {
