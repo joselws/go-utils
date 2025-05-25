@@ -45,10 +45,10 @@ func (deque *Deque[T]) IsEmpty() bool {
 	return deque.Len() == 0
 }
 
-func (deque *Deque[T]) AppendRight(value T) bool {
+func (deque *Deque[T]) AppendRight(value T) error {
 	if deque.IsFull() {
-		return false
+		return ErrFullDeque
 	}
 	deque.list.PushBack(value)
-	return true
+	return nil
 }

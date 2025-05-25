@@ -58,7 +58,8 @@ func TestAppendRightFull(t *testing.T) {
 	deque.AppendRight(5)
 	deque.AppendRight(3)
 	deque.AppendRight(1)
-	if deque.AppendRight(2) {
-		t.Error("AppendRight should return false")
+	err := deque.AppendRight(2)
+	if err == nil {
+		t.Errorf("AppendRight should return %s", ErrFullDeque)
 	}
 }
