@@ -156,3 +156,27 @@ func TestAppendLeftRight(t *testing.T) {
 	}
 
 }
+
+func TestPeekRight(t *testing.T) {
+	deque := NewDeque[int](3)
+	deque.AppendRight(5)
+	deque.AppendRight(3)
+	value, err := deque.PeekRight()
+	if err != nil {
+		t.Errorf("PeekRight should not return an error: %s", err)
+	}
+	if value != 3 {
+		t.Errorf("PeekRight should return 3, not %v", value)
+	}
+	if deque.Len() != 2 {
+		t.Errorf("Deque length should be 2, not %v", deque.Len())
+	}
+}
+
+func TestPeekRightEmpty(t *testing.T) {
+	deque := NewDeque[int](3)
+	_, err := deque.PeekRight()
+	if err == nil {
+		t.Errorf("PeekRight should return %s", ErrEmptyDeque)
+	}
+}

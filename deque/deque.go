@@ -78,3 +78,11 @@ func (deque *Deque[T]) PopLeft() (T, error) {
 	deque.list.Remove(element)
 	return element.Value.(T), nil
 }
+
+func (deque *Deque[T]) PeekRight() (T, error) {
+	if deque.IsEmpty() {
+		return *new(T), ErrEmptyDeque
+	}
+	element := deque.list.Front()
+	return element.Value.(T), nil
+}
