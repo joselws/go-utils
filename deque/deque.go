@@ -119,3 +119,10 @@ func (deque *Deque[T]) PeekLeft() (T, error) {
 	element := deque.list.Back()
 	return element.Value.(T), nil
 }
+
+func (deque *Deque[T]) Clear() {
+	deque.mu.Lock()
+	defer deque.mu.Unlock()
+
+	deque.list.Init()
+}

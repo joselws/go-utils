@@ -204,3 +204,32 @@ func TestPeekLeftEmpty(t *testing.T) {
 		t.Errorf("PeekLeft should return %s", ErrEmptyDeque)
 	}
 }
+
+func TestClearEmptiesDeque(t *testing.T) {
+	deque := NewDeque[int](5)
+	deque.AppendRight(1)
+	deque.AppendLeft(2)
+	deque.AppendRight(3)
+	if deque.Len() != 3 {
+		t.Errorf("Deque length should be 3 before Clear, got %v", deque.Len())
+	}
+	deque.Clear()
+	if !deque.IsEmpty() {
+		t.Error("Deque should be empty after Clear")
+	}
+	if deque.Len() != 0 {
+		t.Errorf("Deque length should be 0 after Clear, got %v", deque.Len())
+	}
+	// Ensure operations work after Clear
+	err := deque.AppendRight(4)
+	if err != nil {
+		t.Errorf("AppendRight after Clear should not return error: %v", err)
+	}
+	val, err := deque.PopLeft()
+	if err != nil {
+		t.Errorf("PopLeft after Clear should not return error: %v", err)
+	}
+	if val != 4 {
+		t.Errorf("PopLeft after Clear should return 4, got %v", val)
+	}
+}
