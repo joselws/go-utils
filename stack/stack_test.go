@@ -193,3 +193,23 @@ func TestIsFull(t *testing.T) {
 		t.Errorf("Expected IsFull to be false after pop from full stack, got true")
 	}
 }
+
+func TestClear(t *testing.T) {
+	s := NewStack[int](5)
+	s.Push(1)
+	s.Push(2)
+	s.Push(3)
+
+	if s.Len() != 3 {
+		t.Errorf("Expected length 3 before clear, got %d", s.Len())
+	}
+
+	s.Clear()
+	if s.Len() != 0 {
+		t.Errorf("Expected length 0 after clear, got %d", s.Len())
+	}
+
+	if !s.IsEmpty() {
+		t.Error("Expected stack to be empty after clear")
+	}
+}

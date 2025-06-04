@@ -97,3 +97,20 @@ func TestIsFullAndIsEmpty(t *testing.T) {
 		t.Error("expected queue to not be full")
 	}
 }
+
+func TestClearQueue(t *testing.T) {
+	q := NewQueue[int](5)
+	for i := range 5 {
+		_ = q.Enqueue(i)
+	}
+	if q.Len() != 5 {
+		t.Errorf("expected length 5, got %d", q.Len())
+	}
+	q.Clear()
+	if !q.IsEmpty() {
+		t.Error("expected queue to be empty after clear")
+	}
+	if q.Len() != 0 {
+		t.Errorf("expected length 0, got %d", q.Len())
+	}
+}

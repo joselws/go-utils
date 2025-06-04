@@ -62,3 +62,7 @@ func (queue *Queue[T]) PeekLast() (T, error) {
 	}
 	return value, nil
 }
+
+func (queue *Queue[T]) Clear() {
+	queue.deque.Clear()
+}

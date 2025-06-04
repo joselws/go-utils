@@ -62,3 +62,7 @@ func (stack *Stack[T]) IsEmpty() bool {
 func (stack *Stack[T]) IsFull() bool {
 	return stack.deque.IsFull()
 }
+
+func (stack *Stack[T]) Clear() {
+	stack.deque.Clear()
+}
